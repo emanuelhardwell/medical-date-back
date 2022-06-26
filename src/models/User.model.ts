@@ -7,7 +7,7 @@ export class User {
   @prop({ required: true, trim: true })
   lastname: string;
 
-  @prop({ required: true, trim: true })
+  @prop({ trim: true })
   lastname2: string;
 
   @prop({ required: true, trim: true })

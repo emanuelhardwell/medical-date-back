@@ -10,19 +10,20 @@ export const schemaValition =
         params: req.params,
         query: req.query,
       });
+
       next();
     } catch (error) {
       console.log(error);
       if (error instanceof ZodError) {
-        return res.status(400).json(
-          error.issues.map((issue) => ({
-            path: issue.path,
-            msg: issue.message,
-          }))
-        );
+        const errors = error.issues.map((issue) => ({
+          // path: issue.path,
+          message: issue.message,
+        }));
+        return res.status(400).json({ ok: false, errors: errors });
       }
+
       return res
-        .status(400)
-        .json({ msg: "Comuniquese con el administrador" });
+        .status(500)
+        .json({ ok: false, message: "Comuniquese con el administrador" });
     }
   };
