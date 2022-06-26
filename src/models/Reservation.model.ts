@@ -1,7 +1,7 @@
 import { prop, Ref, getModelForClass } from "@typegoose/typegoose";
 import { Medic } from "./Medic.model";
-import { Pacient } from "./pacient.model";
-import { User } from "./user.model";
+import { Pacient } from "./Pacient.model";
+import { User } from "./User.model";
 
 module Constants {
   export enum Payment {
@@ -56,4 +56,5 @@ export class Reservation {
   status: Constants.Status[];
 }
 
-export const reservationModel = getModelForClass(Reservation);
+const reservationModel = getModelForClass(Reservation);
+export default reservationModel;

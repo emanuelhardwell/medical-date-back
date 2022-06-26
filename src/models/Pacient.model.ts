@@ -51,4 +51,5 @@ export class Pacient {
   isActive: boolean;
 }
 
-export const pacientModel = getModelForClass(Pacient);
+const pacientModel = getModelForClass(Pacient);
+export default pacientModel;

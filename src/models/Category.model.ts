@@ -5,4 +5,5 @@ export class Category {
   name: string; //TypeScript (ts)
 }
 
-export const categoryModel = getModelForClass(Category);
+const categoryModel = getModelForClass(Category);
+export default categoryModel;

@@ -10,7 +10,7 @@ export class User {
   @prop({ trim: true })
   lastname2: string;
 
-  @prop({ required: true, trim: true })
+  @prop({ required: true, trim: true, unique: true })
   email: string;
 
   @prop({ required: true, trim: true })
@@ -23,4 +23,5 @@ export class User {
   isAdmin: boolean;
 }
 
-export const userModel = getModelForClass(User);
+const userModel = getModelForClass(User);
+export default userModel;

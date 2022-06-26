@@ -1,5 +1,5 @@
 import { prop, getModelForClass, Ref } from "@typegoose/typegoose";
-import { Category } from "./category.model";
+import { Category } from "./Category.model";
 
 module Constants {
   export enum Gender {
@@ -43,4 +43,5 @@ export class Medic {
   category: Ref<Category>;
 }
 
-export const medicModel = getModelForClass(Medic);
+const medicModel = getModelForClass(Medic);
+export default medicModel;

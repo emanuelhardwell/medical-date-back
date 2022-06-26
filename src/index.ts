@@ -4,6 +4,13 @@ import morgan from "morgan";
 import { dbConnection } from "./db/db";
 import { routerAuth } from "./routes/auth.routes";
 
+declare module "express-serve-static-core" {
+  interface Request {
+    uid: any;
+    name: any;
+  }
+}
+
 dotenv.config();
 
 const app = express();
