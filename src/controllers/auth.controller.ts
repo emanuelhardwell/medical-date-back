@@ -78,9 +78,19 @@ export const loginUser = async (req: Request, res: Response) => {
   }
 };
 
-export const renewToken = (req: Request, res: Response) => {
+export const renewToken = async (req: Request, res: Response) => {
+  const { name, uid } = req;
+
   try {
-    res.status(200).json({ ok: true, message: "Se renovo el token" });
+    const token = await jwt.sign(
+      { uid: uid, name: name },
+      String(process.env.SECRET_JWT),
+      { expiresIn: "8h" }
+    );
+
+    res
+      .status(200)
+      .json({ ok: true, message: "Se renovo el token", name, uid, token });
   } catch (error) {
     console.log(error);
     res
