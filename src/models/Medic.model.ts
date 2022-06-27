@@ -24,7 +24,8 @@ export class Medic {
   //   @prop({ required: true })
   //   gender: string; //verificar
   @prop({ required: true, type: String, enum: Constants.Gender })
-  gender: Constants.Gender[];
+  gender: Constants.Gender;
+  // gender: Constants.Gender[];
 
   @prop({ required: true })
   dayOfBirth: Date;

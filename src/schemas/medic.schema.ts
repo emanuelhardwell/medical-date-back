@@ -1,6 +1,8 @@
 import isMongoId from "validator/lib/isMongoId";
 import { z } from "zod";
 
+const GENDERS = ["hombre", "mujer"] as const;
+
 export const createMedicSchema = z.object({
   body: z.object({
     name: z
@@ -31,13 +33,11 @@ export const createMedicSchema = z.object({
       })
       .email("Escribe un correo valido")
       .trim(),
-    gender: z
-      .string({
-        required_error: "Genero es requerido",
-        invalid_type_error: "Genero invalido",
-      })
-      .min(1, "Selecciona un genero")
-      .trim(),
+    gender: z.enum(GENDERS, {
+      description: "sssss",
+      required_error: "Genero requerido",
+      invalid_type_error: "Genero invalido",
+    }),
     dayOfBirth: z.string({
       required_error: "Fecha nacimiento requerida",
       invalid_type_error: "Fecha de nacimiento no valida",
@@ -98,13 +98,11 @@ export const updateMedicSchema = z.object({
       })
       .email("Escribe un correo valido")
       .trim(),
-    gender: z
-      .string({
-        required_error: "Genero es requerido",
-        invalid_type_error: "Genero invalido",
-      })
-      .min(1, "Selecciona un genero")
-      .trim(),
+    gender: z.enum(GENDERS, {
+      description: "sssss",
+      required_error: "Genero requerido",
+      invalid_type_error: "Genero invalido",
+    }),
     dayOfBirth: z.string({
       required_error: "Fecha nacimiento requerida",
       invalid_type_error: "Fecha de nacimiento no valida",
