@@ -3,6 +3,7 @@ import dotenv from "dotenv";
 import morgan from "morgan";
 import { dbConnection } from "./db/db";
 import { routerAuth } from "./routes/auth.routes";
+import { routerCategory } from "./routes/category.routes";
 
 declare module "express-serve-static-core" {
   interface Request {
@@ -25,6 +26,7 @@ app.use(morgan("dev"));
 
 //rutas
 app.use("/api/v1/auth", routerAuth);
+app.use("/api/v1/category", routerCategory);
 
 //server
 app.listen(process.env.PORT || 3000, () =>
