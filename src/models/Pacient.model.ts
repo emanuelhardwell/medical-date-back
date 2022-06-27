@@ -5,6 +5,13 @@ import {
   Ref,
 } from "@typegoose/typegoose";
 
+module Constants {
+  export enum Gender {
+    hombre = "hombre",
+    mujer = "mujer",
+  }
+}
+
 @modelOptions({
   schemaOptions: {
     timestamps: true,
@@ -17,14 +24,14 @@ export class Pacient {
   @prop({ required: true, trim: true })
   lastname: string;
 
-  @prop({ required: true, trim: true })
+  @prop({ trim: true })
   lastname2: string;
 
   @prop({ required: true, trim: true })
   email: string;
 
-  @prop({ required: true })
-  gender: string; //verificar
+  @prop({ required: true, type: String, enum: Constants.Gender })
+  gender: Constants.Gender;
 
   @prop({ required: true })
   dayOfBirth: Date;
@@ -41,7 +48,7 @@ export class Pacient {
   @prop({ required: true })
   medicaments: string;
 
-  @prop({ required: true })
+  @prop({ trim: true })
   alergy: string;
 
   @prop({ required: true, default: false })
