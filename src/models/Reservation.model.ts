@@ -3,19 +3,21 @@ import { Medic } from "./Medic.model";
 import { Pacient } from "./Pacient.model";
 import { User } from "./User.model";
 
+// Forma 1 de implementar enum para ZOD
 module Constants {
   export enum Payment {
     pendiente = "pendiente",
     pagado = "pagado",
     anulado = "anulado",
   }
+}
 
-  export enum Status {
-    pendiente = "pendiente",
-    aplicada = "aplicada",
-    falto = "falto",
-    cancelada = "cancelada",
-  }
+// Forma 2 de implementar enum para ZOD
+export enum Status {
+  pendiente = "pendiente",
+  aplicada = "aplicada",
+  falto = "falto",
+  cancelada = "cancelada",
 }
 
 export class Reservation {
@@ -52,8 +54,8 @@ export class Reservation {
   @prop({ required: true, type: String, enum: Constants.Payment })
   payment: Constants.Payment[];
 
-  @prop({ required: true, type: String, enum: Constants.Status })
-  status: Constants.Status[];
+  @prop({ required: true, type: String, enum: Status })
+  status: Status[];
 }
 
 const reservationModel = getModelForClass(Reservation);

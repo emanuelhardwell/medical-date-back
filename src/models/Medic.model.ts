@@ -5,7 +5,6 @@ module Constants {
   export enum Gender {
     hombre = "hombre",
     mujer = "mujer",
-    anulado = "anulado",
   }
 }
 
