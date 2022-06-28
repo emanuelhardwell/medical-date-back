@@ -1,4 +1,9 @@
-import { prop, Ref, getModelForClass } from "@typegoose/typegoose";
+import {
+  prop,
+  Ref,
+  getModelForClass,
+  modelOptions,
+} from "@typegoose/typegoose";
 import { Medic } from "./Medic.model";
 import { Pacient } from "./Pacient.model";
 import { User } from "./User.model";
@@ -20,6 +25,11 @@ export enum Status {
   cancelada = "cancelada",
 }
 
+@modelOptions({
+  schemaOptions: {
+    timestamps: true,
+  },
+})
 export class Reservation {
   @prop({ required: true, trim: true }) //mongoose
   title: string; //typescript (ts)
@@ -52,10 +62,10 @@ export class Reservation {
   medic: Ref<Medic>;
 
   @prop({ required: true, type: String, enum: Constants.Payment })
-  payment: Constants.Payment[];
+  payment: Constants.Payment;
 
   @prop({ required: true, type: String, enum: Status })
-  status: Status[];
+  status: Status;
 }
 
 const reservationModel = getModelForClass(Reservation);
