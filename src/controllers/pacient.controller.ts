@@ -19,24 +19,31 @@ export const getPacients = async (req: Request, res: Response) => {
 };
 
 export const createPacient = async (req: Request, res: Response) => {
-  const { name, lastname, lastname2 } = req.body;
+  const { name, lastname, lastname2, email } = req.body;
 
   try {
-    const paciente = await Pacient.findOne({ name, lastname, lastname2 });
+    let pacient = await Pacient.findOne({ name, lastname, lastname2 });
 
-    if (paciente) {
+    if (pacient) {
       return res
         .status(400)
         .json({ ok: false, message: "Este paciente ya existe" });
     }
 
-    const pacienteNew = new Pacient(req.body);
-    const pacientSave = await pacienteNew.save();
+    pacient = await Pacient.findOne({ email });
+    if (pacient) {
+      return res
+        .status(400)
+        .json({ ok: false, message: "Este email ya esta en uso" });
+    }
+
+    const pacientNew = new Pacient(req.body);
+    const pacientSave = await pacientNew.save();
 
     res.status(200).json({
       ok: true,
       message: "Paciente creado",
-      paciente: pacientSave,
+      pacient: pacientSave,
     });
   } catch (error) {
     console.log(error);
@@ -48,24 +55,25 @@ export const createPacient = async (req: Request, res: Response) => {
 
 export const updatePacient = async (req: Request, res: Response) => {
   const { id } = req.params;
+  const { name, lastname, lastname2 } = req.body;
 
   try {
-    const paciente = await Pacient.findById(id);
+    const pacient = await Pacient.findById(id);
 
-    if (!paciente) {
+    if (!pacient) {
       return res
         .status(400)
         .json({ ok: false, message: "Este paciente no existe" });
     }
 
-    const pacienteNew = await Pacient.findByIdAndUpdate(id, req.body, {
+    const pacientNew = await Pacient.findByIdAndUpdate(id, req.body, {
       new: true,
     });
 
     res.status(200).json({
       ok: true,
       message: "Paciente actualizado",
-      paciente: pacienteNew,
+      pacient: pacientNew,
     });
   } catch (error) {
     console.log(error);
@@ -79,9 +87,9 @@ export const deletePacient = async (req: Request, res: Response) => {
   const { id } = req.params;
 
   try {
-    const paciente = await Pacient.findById(id);
+    const pacient = await Pacient.findById(id);
 
-    if (!paciente) {
+    if (!pacient) {
       return res
         .status(400)
         .json({ ok: false, message: "Este paciente no existe" });

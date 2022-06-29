@@ -27,7 +27,7 @@ export class Pacient {
   @prop({ trim: true })
   lastname2: string;
 
-  @prop({ required: true, trim: true })
+  @prop({ required: true, trim: true, unique: true })
   email: string;
 
   @prop({ required: true, type: String, enum: Constants.Gender })
