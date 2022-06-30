@@ -2,6 +2,10 @@ import { Request, Response } from "express";
 import User from "../models/User.model";
 import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
+import {
+  handleErrorResponse,
+  handleInternalServerError,
+} from "../helpers/handleError";
 
 export const createUser = async (req: Request, res: Response) => {
   const { email, password } = req.body;
@@ -10,7 +14,7 @@ export const createUser = async (req: Request, res: Response) => {
     const user = await User.findOne({ email });
 
     if (user) {
-      return res.status(400).json({ ok: false, message: "Usuario no valido" });
+      return handleErrorResponse(res, "Usuario no valido", 400);
     }
 
     const userNew = new User(req.body);
@@ -31,10 +35,7 @@ export const createUser = async (req: Request, res: Response) => {
       token,
     });
   } catch (error) {
-    console.log(error);
-    res
-      .status(500)
-      .json({ ok: false, message: "Comunicate con el administrador" });
+    handleInternalServerError(res, error);
   }
 };
 
@@ -45,16 +46,12 @@ export const loginUser = async (req: Request, res: Response) => {
     const user = await User.findOne({ email });
 
     if (!user) {
-      return res
-        .status(400)
-        .json({ ok: false, message: "Correo o contraseña incorrecta" });
+      return handleErrorResponse(res, "Correo o contraseña incorrecta", 400);
     }
 
     const comparePassword = bcrypt.compareSync(password, user.password);
     if (!comparePassword) {
-      return res
-        .status(400)
-        .json({ ok: false, message: "Correo o contraseña incorrecta" });
+      return handleErrorResponse(res, "Correo o contraseña incorrecta", 400);
     }
 
     const token = await jwt.sign(
@@ -71,10 +68,7 @@ export const loginUser = async (req: Request, res: Response) => {
       token,
     });
   } catch (error) {
-    console.log(error);
-    res
-      .status(500)
-      .json({ ok: false, message: "Comunicate con el administrador" });
+    handleInternalServerError(res, error);
   }
 };
 
@@ -92,9 +86,6 @@ export const renewToken = async (req: Request, res: Response) => {
       .status(200)
       .json({ ok: true, message: "Se renovo el token", name, uid, token });
   } catch (error) {
-    console.log(error);
-    res
-      .status(500)
-      .json({ ok: false, message: "Comunicate con el administrador" });
+    handleInternalServerError(res, error);
   }
 };

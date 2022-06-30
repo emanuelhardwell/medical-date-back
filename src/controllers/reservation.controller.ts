@@ -1,4 +1,8 @@
 import { Response, Request } from "express";
+import {
+  handleErrorResponse,
+  handleInternalServerError,
+} from "../helpers/handleError";
 import Reservation from "../models/Reservation.model";
 
 export const getReservations = async (req: Request, res: Response) => {
@@ -11,10 +15,7 @@ export const getReservations = async (req: Request, res: Response) => {
       reservations,
     });
   } catch (error) {
-    console.log(error);
-    res
-      .status(500)
-      .json({ ok: false, message: "Comunicate con el administrador" });
+    handleInternalServerError(res, error);
   }
 };
 
@@ -25,9 +26,7 @@ export const createReservation = async (req: Request, res: Response) => {
     const reservation = await Reservation.findOne({ title, note });
 
     if (reservation) {
-      return res
-        .status(400)
-        .json({ ok: false, message: "Este reservación ya existe" });
+      return handleErrorResponse(res, "Este reservación ya existe", 400);
     }
 
     const reservationNew = new Reservation(req.body);
@@ -39,10 +38,7 @@ export const createReservation = async (req: Request, res: Response) => {
       reservation: reservationSave,
     });
   } catch (error) {
-    console.log(error);
-    res
-      .status(500)
-      .json({ ok: false, message: "Comunicate con el administrador" });
+    handleInternalServerError(res, error);
   }
 };
 
@@ -53,9 +49,7 @@ export const updateReservation = async (req: Request, res: Response) => {
     const reservation = await Reservation.findById(id);
 
     if (!reservation) {
-      return res
-        .status(400)
-        .json({ ok: false, message: "Este reservación no existe" });
+      return handleErrorResponse(res, "Este reservación no existe", 400);
     }
 
     const reservationNew = await Reservation.findByIdAndUpdate(id, req.body, {
@@ -68,10 +62,7 @@ export const updateReservation = async (req: Request, res: Response) => {
       reservation: reservationNew,
     });
   } catch (error) {
-    console.log(error);
-    res
-      .status(500)
-      .json({ ok: false, message: "Comunicate con el administrador" });
+    handleInternalServerError(res, error);
   }
 };
 
@@ -82,9 +73,7 @@ export const deleteReservation = async (req: Request, res: Response) => {
     const reservation = await Reservation.findById(id);
 
     if (!reservation) {
-      return res
-        .status(400)
-        .json({ ok: false, message: "Este reservación no existe" });
+      return handleErrorResponse(res, "Este reservación no existe", 400);
     }
 
     await Reservation.findByIdAndDelete(id);
@@ -94,9 +83,6 @@ export const deleteReservation = async (req: Request, res: Response) => {
       message: "Reservación eliminada",
     });
   } catch (error) {
-    console.log(error);
-    res
-      .status(500)
-      .json({ ok: false, message: "Comunicate con el administrador" });
+    handleInternalServerError(res, error);
   }
 };

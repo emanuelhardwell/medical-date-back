@@ -1,4 +1,8 @@
 import { Response, Request } from "express";
+import {
+  handleErrorResponse,
+  handleInternalServerError,
+} from "../helpers/handleError";
 import Medic from "../models/Medic.model";
 
 export const getMedics = async (req: Request, res: Response) => {
@@ -11,10 +15,7 @@ export const getMedics = async (req: Request, res: Response) => {
       medics,
     });
   } catch (error) {
-    console.log(error);
-    res
-      .status(500)
-      .json({ ok: false, message: "Comunicate con el administrador" });
+    handleInternalServerError(res, error);
   }
 };
 
@@ -25,9 +26,7 @@ export const createMedic = async (req: Request, res: Response) => {
     const medic = await Medic.findOne({ name, lastname, lastname2 });
 
     if (medic) {
-      return res
-        .status(400)
-        .json({ ok: false, message: "Este medico ya existe" });
+      return handleErrorResponse(res, "Este medico ya existe", 400);
     }
 
     const medicNew = new Medic(req.body);
@@ -39,10 +38,7 @@ export const createMedic = async (req: Request, res: Response) => {
       medic: medicSave,
     });
   } catch (error) {
-    console.log(error);
-    res
-      .status(500)
-      .json({ ok: false, message: "Comunicate con el administrador" });
+    handleInternalServerError(res, error);
   }
 };
 
@@ -53,9 +49,7 @@ export const updateMedic = async (req: Request, res: Response) => {
     const medic = await Medic.findById(id);
 
     if (!medic) {
-      return res
-        .status(400)
-        .json({ ok: false, message: "Este medico no existe" });
+      return handleErrorResponse(res, "Este medico no existe", 400);
     }
 
     const medicNew = await Medic.findByIdAndUpdate(id, req.body, { new: true });
@@ -66,10 +60,7 @@ export const updateMedic = async (req: Request, res: Response) => {
       medic: medicNew,
     });
   } catch (error) {
-    console.log(error);
-    res
-      .status(500)
-      .json({ ok: false, message: "Comunicate con el administrador" });
+    handleInternalServerError(res, error);
   }
 };
 
@@ -80,9 +71,7 @@ export const deleteMedic = async (req: Request, res: Response) => {
     const medic = await Medic.findById(id);
 
     if (!medic) {
-      return res
-        .status(400)
-        .json({ ok: false, message: "Este medico no existe" });
+      return handleErrorResponse(res, "Este medico no existe", 400);
     }
 
     await Medic.findByIdAndDelete(id);
@@ -92,9 +81,6 @@ export const deleteMedic = async (req: Request, res: Response) => {
       message: "Medico eliminado",
     });
   } catch (error) {
-    console.log(error);
-    res
-      .status(500)
-      .json({ ok: false, message: "Comunicate con el administrador" });
+    handleInternalServerError(res, error);
   }
 };

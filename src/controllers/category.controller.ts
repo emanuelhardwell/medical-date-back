@@ -1,4 +1,8 @@
 import { Response, Request } from "express";
+import {
+  handleErrorResponse,
+  handleInternalServerError,
+} from "../helpers/handleError";
 import Category from "../models/Category.model";
 
 export const getCategories = async (req: Request, res: Response) => {
@@ -11,10 +15,7 @@ export const getCategories = async (req: Request, res: Response) => {
       categories,
     });
   } catch (error) {
-    console.log(error);
-    res
-      .status(500)
-      .json({ ok: false, message: "Comunicate con el administrador" });
+    handleInternalServerError(res, error);
   }
 };
 
@@ -25,9 +26,7 @@ export const createCategory = async (req: Request, res: Response) => {
     const category = await Category.findOne({ name });
 
     if (category) {
-      return res
-        .status(400)
-        .json({ ok: false, message: "Esta categoria ya existe" });
+      return handleErrorResponse(res, "Esta categoria ya existe", 400);
     }
 
     const categoryNew = new Category(req.body);
@@ -39,10 +38,7 @@ export const createCategory = async (req: Request, res: Response) => {
       category: categorySave,
     });
   } catch (error) {
-    console.log(error);
-    res
-      .status(500)
-      .json({ ok: false, message: "Comunicate con el administrador" });
+    handleInternalServerError(res, error);
   }
 };
 
@@ -54,9 +50,7 @@ export const updateCategory = async (req: Request, res: Response) => {
     const category = await Category.findById(id);
 
     if (!category) {
-      return res
-        .status(400)
-        .json({ ok: false, message: "Esta categoria no existe" });
+      return handleErrorResponse(res, "Esta categoria no existe", 400);
     }
 
     const categoryNew = await Category.findByIdAndUpdate(
@@ -71,10 +65,7 @@ export const updateCategory = async (req: Request, res: Response) => {
       category: categoryNew,
     });
   } catch (error) {
-    console.log(error);
-    res
-      .status(500)
-      .json({ ok: false, message: "Comunicate con el administrador" });
+    handleInternalServerError(res, error);
   }
 };
 
@@ -85,9 +76,7 @@ export const deleteCategory = async (req: Request, res: Response) => {
     const category = await Category.findById(id);
 
     if (!category) {
-      return res
-        .status(400)
-        .json({ ok: false, message: "Esta categoria no existe" });
+      return handleErrorResponse(res, "Esta categoria no existe", 400);
     }
 
     await Category.findByIdAndDelete(id);
@@ -97,9 +86,6 @@ export const deleteCategory = async (req: Request, res: Response) => {
       message: "Categoria eliminada",
     });
   } catch (error) {
-    console.log(error);
-    res
-      .status(500)
-      .json({ ok: false, message: "Comunicate con el administrador" });
+    handleInternalServerError(res, error);
   }
 };
