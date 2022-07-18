@@ -1,6 +1,7 @@
 import express from "express";
 import dotenv from "dotenv";
 import morgan from "morgan";
+import cors from "cors";
 import { dbConnection } from "./db/db";
 import { routerAuth } from "./routes/auth.routes";
 import { routerCategory } from "./routes/category.routes";
@@ -21,6 +22,9 @@ const app = express();
 
 //db
 dbConnection();
+
+// cors
+app.use(cors());
 
 // middlewares
 app.use(express.json());
